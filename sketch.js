@@ -26,7 +26,7 @@ function preload()
   albumArt = loadImage("./AlbumArt.jpg");
   albumArtBG = loadImage("./AlbumArt.jpg");
   albumArtMain = loadImage("./AlbumArt.jpg");
-  songFont = loadFont("/HW08A/BlackHan.ttf");
+  songFont = loadFont("./BlackHan.ttf");
 }
 
 class musicButtons
