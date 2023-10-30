@@ -102,6 +102,7 @@ function draw()
       {
         playButton.changeButtonName("▶");
         currentTimeStamp = musicSeek.value();
+        soundIndex=0;
 
         fill(0);
         noStroke();
@@ -204,11 +205,15 @@ function vizEffects()
   {
     for(let i=0; i<25; i++)
     {
-      let rect_trans = random(50,125);
+      let rect_trans = random(50,200);
       fill(255,255,0,rect_trans);
       noStroke();
       rect(random(0,width), random(0,height), random(0,100), random(0,100));
     }
+    
+    fill(0);
+    noStroke();
+    ellipse(width/2, height/2.5, 300);
   }
 
   //code for white ellipses generation
@@ -220,6 +225,10 @@ function vizEffects()
       noStroke();
       ellipse(random(0,width), random(0,height), 100);
     }
+
+    fill(0);
+    noStroke();
+    ellipse(width/2, height/2.5, 200);
   }
 
   //code for red-green ellipses generation
@@ -237,6 +246,10 @@ function vizEffects()
       noStroke();
       ellipse(random(0,width), random(0,height), 50)
     }
+
+    fill(0);
+    noStroke();
+    ellipse(width/2, height/2.5, 300);
   }
 
   //code for drop countdown generation
@@ -315,4 +328,5 @@ function stopMusic()
 {
   projectSound.stop()
   playButton.changeButtonName("▶");
+  soundIndex=0;
 }
