@@ -1,3 +1,4 @@
+//variables initialization
 let projectSound;
 let totalDuration;
 let currentTimeStamp = 0;
@@ -20,6 +21,7 @@ let musicSeek;
 let vizChoice;
 let vizChoice_Option;
 
+//pre-loading sound, images, and font
 function preload()
 {
   projectSound = loadSound("./HW08B_Sound.mp3");
@@ -29,6 +31,7 @@ function preload()
   songFont = loadFont("./BlackHan.ttf");
 }
 
+//creating class for buttons
 class musicButtons
 {
   constructor(_buttonName, _xPosButton, _yPosButton, _clickFunction)
@@ -40,6 +43,7 @@ class musicButtons
     this.button.style("border-radius","10px");
     this.button.mouseClicked(_clickFunction);
   }
+  //function to change button label during play/pause
   changeButtonName(_newName)
   {
     this.button.html(_newName);
@@ -53,14 +57,17 @@ function setup()
   background(0);
   soundWaveForms = projectSound.getPeaks();
 
+  //creating dynamic "seek bar" using DOM slider
   totalDuration = projectSound.duration();
   musicSeek = createSlider(0, totalDuration, 0, 1);
   musicSeek.position(width/3.05, height/1.125);
   musicSeek.style("width", width/3+"px");
 
+  //initializing button classes
   playButton = new musicButtons("▶", width/2.2, height/1.07, playMusic);
   stopButton = new musicButtons("■", width/2, height/1.07, stopMusic);
 
+  //creating radio buttons for toggling visualizations
   vizChoice = createRadio();
   vizChoice.position(width/1.2, height/1.085);
   vizChoice.style('font-family','sans-serif');
@@ -72,6 +79,7 @@ function setup()
 
 function draw()
 {
+  //detecting value from radio buttons
   vizChoice_Option = vizChoice.value();
   switch(vizChoice_Option)
   {
@@ -107,8 +115,11 @@ function draw()
         text("Press [ PLAY ] to Start", width/2, height/2.4);
       }
     break;
-
+    
+    //code for album art visualization
     case 'AlbumArt':
+      
+      //album art background graphic
       imageMode(CENTER);
       albumArtBG.resize(width,0);
       image(albumArtBG, width/2, height/2);
@@ -117,6 +128,7 @@ function draw()
       fill(0,210);
       rect(0, 0, width, height);
 
+      //album art active (front)
       imageMode(CENTER);
       albumArtMain.resize(400,400);
       image(albumArtMain, width/2, height/2.4);
@@ -143,10 +155,12 @@ function draw()
   strokeWeight(1);
   rect(-100, height-100, 2*width, height);
 
+  //album art in bottom player
   imageMode(CORNER);
   albumArt.resize(75,75);
   image(albumArt, 10, height/1.135)
 
+  //album details
   fill(200,0,0);
   noStroke();
   textFont(songFont);
@@ -164,6 +178,7 @@ function draw()
   textSize(16);
   text("01:00", width/1.515, height/1.07);
   
+  //dynamic timestamp generation for seek-bar
   if(floor(currentTimeStamp)<10)
   {
     text("00:0"+floor(currentTimeStamp), width/3, height/1.07);
@@ -181,8 +196,10 @@ function draw()
   }
 }
 
+//custom function for generating effects & visuals
 function vizEffects()
 {
+  //code for yellow-rectangle generation
   if((currentTimeStamp>=6.2 && currentTimeStamp<=7.5) || (currentTimeStamp>=12.2 && currentTimeStamp<=13.6) || (currentTimeStamp>=18.3 && currentTimeStamp<=19.6) || (currentTimeStamp>=24.5 && currentTimeStamp<=25.7) || (currentTimeStamp>=30.5 && currentTimeStamp<=31.7) || (currentTimeStamp>=36.8 && currentTimeStamp<=38.0) || (currentTimeStamp>=42.9 && currentTimeStamp<=44.0))
   {
     for(let i=0; i<25; i++)
@@ -194,6 +211,7 @@ function vizEffects()
     }
   }
 
+  //code for white ellipses generation
   if((currentTimeStamp>=20.0 && currentTimeStamp<=20.85))
   {
     for(let i=0; i<25; i++)
@@ -204,6 +222,7 @@ function vizEffects()
     }
   }
 
+  //code for red-green ellipses generation
   if((currentTimeStamp>=29.1 && currentTimeStamp<=30.6))
   {
     for(i=0; i<=20; i++)
@@ -220,6 +239,7 @@ function vizEffects()
     }
   }
 
+  //code for drop countdown generation
   if((currentTimeStamp>=45.9 && currentTimeStamp<=49.0))
   {
     fill(255);
@@ -238,12 +258,14 @@ function vizEffects()
     }
   }
 
+  //mapping getPeaks() result to mimic bass-line, mids & highs of audio
   vizRad_Highs = map(soundWaveForms[soundIndex], 0.2, 1, -height/3, height/3);
   vizRad_Mids = map(soundWaveForms[soundIndex], 0.05, 0.2, -height/5, height/5);
   vizRad_Lows = map(soundWaveForms[soundIndex], -1, 0.05, -height/10, height/10);
 
   if(currentTimeStamp>=49.1)
   {
+    //generating getPeaks() visualizer post drop
     stroke(random(0,256), random(0,256), random(0,256), random(100,200));
     noFill();
     ellipse(width/2, height/2.5, 2*vizRad_Highs, 2*vizRad_Lows);
@@ -253,6 +275,7 @@ function vizEffects()
   noFill();
   strokeWeight(5);
 
+  //generating getPeaks()-mapped ellipses for visualizer
   if(soundWaveForms[soundIndex]<=0.05)
   {
     stroke(random(100,256),0,0);
@@ -272,6 +295,7 @@ function vizEffects()
   soundIndex++;
 }
 
+//function to play audio
 function playMusic()
 {
   if(projectSound.isPlaying())
@@ -286,6 +310,7 @@ function playMusic()
   }
 }
 
+//function to stop audio
 function stopMusic()
 {
   projectSound.stop()
